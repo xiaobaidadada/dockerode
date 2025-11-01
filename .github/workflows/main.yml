@@ -1,35 +1,28 @@
-name: CI
+name: "构建与发布"
+run-name: 任务参数:${{ inputs.job }} ;分支:${{ github.ref_name }} # 每次运行的时候显示的名字
 
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  workflow_dispatch: # 添加这个才会显示手动触发按钮
+    inputs:
+      job:
+        description: "任务类型, build-exe, push-docker, push-npm, all"
+        required: true
+        default: "push-npm"
 
 jobs:
-  build_nodejs:
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x, 20.x, 22.x]
-    
+  push-npm:
+    if: ${{ github.event.inputs.job == 'push-npm' || github.event.inputs.job == 'all' }}
+    runs-on: windows-2022
+    name: 推送到npm
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Provisioning
-        run: |
-          docker --version
-          node -v
-          docker pull ubuntu
-
-      - name: NPM install
-        run: npm install
-      
-      - name: NPM test
-        run: npm test
+          node-version: 18
+          registry-url: https://registry.npmjs.org
+      - run: pip.exe install setuptools
+      #      - run: npm install
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

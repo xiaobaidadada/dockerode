@@ -1,8 +1,8 @@
 {
-  "name": "dockerode",
+  "name": "@xiaobaidadada/dockerode",
   "description": "Docker Remote API module.",
   "version": "4.0.9",
-  "author": "Pedro Dias <petermdias@gmail.com>",
+  "author": "xiaobaidadada",
   "maintainers": [
     "apocas <petermdias@gmail.com>"
   ],
@@ -18,8 +18,7 @@
     "@balena/dockerignore": "^1.0.2",
     "@grpc/grpc-js": "^1.11.1",
     "@grpc/proto-loader": "^0.7.13",
-    "docker-modem": "^5.0.6",
-    "protobufjs": "^7.3.2",
+    "@xiaobaidadada/docker-modem": "^5.0.6",
     "tar-fs": "^2.1.4",
     "uuid": "^10.0.0"
   },
@@ -36,5 +35,9 @@
   "license": "Apache-2.0",
   "engines": {
     "node": ">= 8.0"
-  }
+  },
+  "files": [
+    "lib/**/*",
+    "package.json"
+  ]
 }
